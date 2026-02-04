@@ -23,22 +23,17 @@ public class OrderBook {
 
     }
 
-    public boolean removeOrder(int orderId){
-        boolean removed = false;
+    public void removeOrder(int orderId){
         Optional<Order> matchFound = this.ordersBySymbol.values()
                 .stream().flatMap(Collection::stream)
                 .filter(order -> order.orderId() == orderId)
                 .findFirst();
-        if(matchFound.isEmpty()){
-            return removed;
-        }
-        Order orderToBeDeleted = matchFound.get();
-        for (Map.Entry<String, TreeSet<Order>> entry : ordersBySymbol.entrySet()) {
-            String s = entry.getKey();
-            TreeSet<Order> orders = entry.getValue();
-            removed = orders.remove(orderToBeDeleted);
-        }
-return removed;
+        matchFound.ifPresent(orderToBeDeleted -> {
+            for (Map.Entry<String, TreeSet<Order>> entry : ordersBySymbol.entrySet()) {
+                TreeSet<Order> orders = entry.getValue();
+                orders.remove(orderToBeDeleted);
+            }
+        });
     }
 
     public TreeSet<Order> getOrdersBySymbol(String symbol){
