@@ -32,7 +32,13 @@ public class OrderController {
         return ResponseEntity.ok(String.format("Order ID: %d deleted successfully", orderId));
     }
 
-    @PostMapping(path = "/calculate")
+    @PostMapping(path = "/place")
+    public ResponseEntity<OrderResponse<String>> placeOrder(@RequestBody Order order){
+        orderManager.placeOrder(order.symbol(), order.side(), order.price());
+        return ResponseEntity.ok(new OrderResponse<>("Order placed successfully"));
+    }
+
+    @PostMapping(path = "/price")
     public ResponseEntity<OrderResponse<Integer>> calculatedPrice(@RequestBody Order order){
         int totalPrice = orderManager.calculatePrice(order.symbol(), order.side(), order.price());
         log.info("TotalPrice calculated successfully");

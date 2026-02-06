@@ -42,10 +42,20 @@ public class OrderControllerTest {
     }
 
     @Test
+    void testPlaceOrder() {
+        restTestClient.post()
+                .uri("http://localhost:%d/order/place".formatted(port))
+                .body(new Order(1, "JPM", Side.BUY, 10, 20))
+                .exchange()
+                .expectBody(OrderResponse.class)
+                .isEqualTo(new OrderResponse<>("Order placed successfully"));
+    }
+
+    @Test
     void testCalculateOrder() {
         testOrderDeletion();
         restTestClient.post()
-                .uri("http://localhost:%d/order/calculate".formatted(port))
+                .uri("http://localhost:%d/order/price".formatted(port))
                 .body(new Order(1, "JPM", Side.BUY, 10, 20))
                 .exchange()
                 .expectBody(OrderResponse.class)
