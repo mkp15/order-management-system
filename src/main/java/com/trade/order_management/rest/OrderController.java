@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/order")
+@RequestMapping(path = "/orders")
 @Slf4j
 public class OrderController {
 
@@ -32,7 +32,7 @@ public class OrderController {
         return ResponseEntity.ok(String.format("Order ID: %d deleted successfully", orderId));
     }
 
-    @PostMapping(path = "/place")
+    @PostMapping(path = "/confirm")
     public ResponseEntity<OrderResponse<String>> placeOrder(@RequestBody Order order){
         orderManager.placeOrder(order.symbol(), order.side(), order.price());
         return ResponseEntity.ok(new OrderResponse<>("Order placed successfully"));

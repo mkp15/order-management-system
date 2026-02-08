@@ -24,7 +24,7 @@ public class OrderControllerTest {
     @Test
     void testOrderBooking() {
         restTestClient.post()
-                .uri("http://localhost:%d/order".formatted(port))
+                .uri("http://localhost:%d/orders".formatted(port))
                 .body(new Order(1, "JPM", Side.BUY, 10, 20))
                 .exchange()
                 .expectBody(String.class)
@@ -34,7 +34,7 @@ public class OrderControllerTest {
     @Test
     void testOrderDeletion() {
         restTestClient.post()
-                .uri("http://localhost:%d/order/delete".formatted(port))
+                .uri("http://localhost:%d/orders/delete".formatted(port))
                 .body(1)
                 .exchange()
                 .expectBody(String.class)
@@ -44,7 +44,7 @@ public class OrderControllerTest {
     @Test
     void testPlaceOrder() {
         restTestClient.post()
-                .uri("http://localhost:%d/order/place".formatted(port))
+                .uri("http://localhost:%d/orders/confirm".formatted(port))
                 .body(new Order(1, "JPM", Side.BUY, 10, 20))
                 .exchange()
                 .expectBody(OrderResponse.class)
@@ -55,7 +55,7 @@ public class OrderControllerTest {
     void testCalculateOrder() {
         testOrderDeletion();
         restTestClient.post()
-                .uri("http://localhost:%d/order/price".formatted(port))
+                .uri("http://localhost:%d/orders/price".formatted(port))
                 .body(new Order(1, "JPM", Side.BUY, 10, 20))
                 .exchange()
                 .expectBody(OrderResponse.class)
